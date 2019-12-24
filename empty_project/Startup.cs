@@ -32,24 +32,20 @@ namespace empty_project
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                // create options to config Developer Exception Page
+                var devExceptionPageOptions = new DeveloperExceptionPageOptions
+                {
+                    SourceCodeLineCount = 10  // line numbers to display before & after exception throwing line
+                };
+                app.UseDeveloperExceptionPage(devExceptionPageOptions);  // this MW should be plugged in ASAP
             }
-
-            // create & config default options
-            var defaultFilesOptions = new DefaultFilesOptions();
-            defaultFilesOptions.DefaultFileNames.Clear();
-            defaultFilesOptions.DefaultFileNames.Add("foo.html");
 
             // create & config file server options
             var fileServerOptions = new FileServerOptions();
             fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
             fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
 
-            app.UseFileServer(/*fileServerOptions*/);  // 2 combined in 1
-
-            //app.UseDefaultFiles(/*defaultFilesOptions*/);
-
-            //app.UseStaticFiles();
+            app.UseFileServer(fileServerOptions);  // 2 combined in 1
 
             app.UseRouting();
 
@@ -57,6 +53,7 @@ namespace empty_project
             {
                 endpoints.MapGet("/", async context =>
                 {
+                    throw new Exception("Something went wrong processing the request!");
                     await context.Response.WriteAsync(System.Diagnostics.Process.GetCurrentProcess().ProcessName + _config["MyKey"]);
                 });
             });
