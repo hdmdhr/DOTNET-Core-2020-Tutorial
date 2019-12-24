@@ -28,28 +28,30 @@ namespace empty_project
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            // create & config default options
+            var defaultFilesOptions = new DefaultFilesOptions();
+            defaultFilesOptions.DefaultFileNames.Clear();
+            defaultFilesOptions.DefaultFileNames.Add("foo.html");
+
+            // create & config file server options
+            var fileServerOptions = new FileServerOptions();
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
+
+            app.UseFileServer(/*fileServerOptions*/);  // 2 combined in 1
+
+            //app.UseDefaultFiles(/*defaultFilesOptions*/);
+
+            //app.UseStaticFiles();
+
             app.UseRouting();
-
-            app.Use(async (HttpContext context, Func<Task> next) =>
-            {
-                logger.LogInformation("MW1: Incoming request to Middleware 1st.");
-                await next();
-                logger.LogInformation("MW1: Outgoing response from 1st MW");
-            });
-
-            app.Use(async (HttpContext context, Func<Task> next) =>
-            {
-                logger.LogInformation("MW2: Incoming request to MW 2nd.");
-                await next();
-                logger.LogInformation("MW2: Outgoing response from 2nd MW");
-            });
 
             app.UseEndpoints(endpoints =>
             {
