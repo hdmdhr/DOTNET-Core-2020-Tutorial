@@ -8,9 +8,9 @@ namespace empty_project.Controllers
 {
     public class HomeController : Controller
     {
-        public string Index()
+        public IActionResult Index()
         {
-            return "Hello from HomeController";
+            return Json(new {id=1, name="Daniel Hu"});
         }
     }
 }

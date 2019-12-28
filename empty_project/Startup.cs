@@ -27,6 +27,7 @@ namespace empty_project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc(options => options.EnableEndpointRouting = false);
+            //services.AddMvcCore();  // no need for this since .AddMvc call it internally; also .AddMvcCore only add core services which does not include JsonFomatter, hence cannot return JSON in HomeController
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
