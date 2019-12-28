@@ -32,20 +32,10 @@ namespace empty_project
         {
             if (env.IsDevelopment())
             {
-                // create options to config Developer Exception Page
-                var devExceptionPageOptions = new DeveloperExceptionPageOptions
-                {
-                    SourceCodeLineCount = 10  // line numbers to display before & after exception throwing line
-                };
-                app.UseDeveloperExceptionPage(devExceptionPageOptions);  // this MW should be plugged in ASAP
+                app.UseDeveloperExceptionPage();  // this MW should be plugged in ASAP
             }
 
-            // create & config file server options
-            var fileServerOptions = new FileServerOptions();
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
-
-            app.UseFileServer(fileServerOptions);  // 2 combined in 1
+            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -53,8 +43,7 @@ namespace empty_project
             {
                 endpoints.MapGet("/", async context =>
                 {
-                    throw new Exception("Something went wrong processing the request!");
-                    await context.Response.WriteAsync(System.Diagnostics.Process.GetCurrentProcess().ProcessName + _config["MyKey"]);
+                    await context.Response.WriteAsync(env.EnvironmentName);
                 });
             });
         }
