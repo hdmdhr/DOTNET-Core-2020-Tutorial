@@ -1,20 +1,19 @@
-﻿@using empty_project.Models
-@model Employee
+﻿@model empty_project.ViewModels.HomeDetailsViewModel
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
 </head>
 <body>
-    <h1>@ViewBag.PageTitle</h1>
+    <h1>@Model.PageTitle</h1>
 
     <table>
         <tr>
             <td>Name:</td>
-            <td>@Model.Name</td>
+            <td>@Model.Employee.Name</td>
         </tr>
         <tr>
             <td>Department:</td>
-            <td>@Model.Department</td>
+            <td>@Model.Employee.Department</td>
         </tr>
     </table>
     

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using empty_project.Models;
+using empty_project.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace empty_project.Controllers
@@ -23,9 +24,12 @@ namespace empty_project.Controllers
 
         public IActionResult Details()
         {
-            var model = _employeeRepo.GetEmployee(2);
-            ViewBag.PageTitle = "Employee Details";
-            return View(model);
+            var homeDetailsViewModel = new HomeDetailsViewModel()
+            {
+                Employee = _employeeRepo.GetEmployee(2),
+                PageTitle = "Employee Details"
+            };
+            return View(homeDetailsViewModel);
         }
     }
 }
