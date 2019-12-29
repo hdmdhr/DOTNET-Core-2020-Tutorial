@@ -27,8 +27,8 @@ namespace empty_project
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc(options => options.EnableEndpointRouting = false);
-            //services.AddMvcCore();  // no need for this since .AddMvc call it internally; also .AddMvcCore only add core services which does not include JsonFomatter, hence cannot return JSON in HomeController
+            services.AddMvc(options => options.EnableEndpointRouting = false)
+                .AddXmlSerializerFormatters();  // this enable content negotiation for XML (Accept: application/xml)
             services.AddSingleton<IEmployeeRepository, MockEmployeeRepository>();
         }
 

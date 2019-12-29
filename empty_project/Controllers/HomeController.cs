@@ -9,7 +9,7 @@ namespace empty_project.Controllers
 {
     public class HomeController : Controller
     {
-        private IEmployeeRepository _employeeRepo;
+        private readonly IEmployeeRepository _employeeRepo;
 
         public HomeController(IEmployeeRepository employeeRepo)
         {
@@ -19,6 +19,11 @@ namespace empty_project.Controllers
         public IActionResult Index()
         {
             return Json(_employeeRepo.GetEmployee(1));
+        }
+
+        public IActionResult Details()
+        {
+            return new ObjectResult(_employeeRepo.GetEmployee(2));
         }
     }
 }
