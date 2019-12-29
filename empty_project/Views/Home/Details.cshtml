@@ -1,8 +1,26 @@
-﻿<html xmlns="http://www.w3.org/1999/xhtml">
+﻿@using empty_project.Models
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
 </head>
 <body>
-    <h1>Hello from Details View</h1>
+    <h1>@ViewData["PageTitle"]</h1>
+    
+    @{
+        var employee = ViewData["Employee"] as Employee;
+    }
+    
+    <table>
+        <tr>
+            <td>Name:</td>
+            <td>@employee.Name</td>
+        </tr>
+        <tr>
+            <td>Department:</td>
+            <td>@employee.Department</td>
+        </tr>
+    </table>
+    
+    
 </body>
 </html>
