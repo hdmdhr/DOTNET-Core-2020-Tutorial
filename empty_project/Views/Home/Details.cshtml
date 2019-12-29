@@ -1,4 +1,5 @@
 ﻿@using empty_project.Models
+@model Employee
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title></title>
@@ -9,11 +10,11 @@
     <table>
         <tr>
             <td>Name:</td>
-            <td>@ViewBag.Employee.Name</td>
+            <td>@Model.Name</td>
         </tr>
         <tr>
             <td>Department:</td>
-            <td>@ViewBag.Employee.Department</td>
+            <td>@Model.Department</td>
         </tr>
     </table>
     

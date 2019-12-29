@@ -24,9 +24,8 @@ namespace empty_project.Controllers
         public IActionResult Details()
         {
             var model = _employeeRepo.GetEmployee(2);
-            ViewBag.Employee = model;  // ViewBag use dynamic property, type is decided at Run Time, no need to do casting in View
             ViewBag.PageTitle = "Employee Details";
-            return View();
+            return View(model);
         }
     }
 }
