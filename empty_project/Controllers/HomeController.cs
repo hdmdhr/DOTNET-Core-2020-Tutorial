@@ -23,6 +23,7 @@ namespace empty_project.Controllers
 
         public IActionResult Details()
         {
+            return View();
             return new ObjectResult(_employeeRepo.GetEmployee(2));
         }
     }
