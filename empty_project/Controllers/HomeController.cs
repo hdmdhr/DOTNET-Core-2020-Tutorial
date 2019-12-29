@@ -23,8 +23,8 @@ namespace empty_project.Controllers
 
         public IActionResult Details()
         {
-            return View();
-            return new ObjectResult(_employeeRepo.GetEmployee(2));
+            return View("Views/Home/Test.cshtml");  // 4 overloads: no param; model; file name (without extension); absolute (with ext) / relative (without ext) path
+            return new ObjectResult(_employeeRepo.GetEmployee(2)); 
         }
     }
 }
