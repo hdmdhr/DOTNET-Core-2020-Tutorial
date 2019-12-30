@@ -1,22 +1,19 @@
 ﻿@model empty_project.ViewModels.HomeDetailsViewModel
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
-</head>
-<body>
-    <h1>@Model.PageTitle</h1>
 
-    <table>
-        <tr>
-            <td>Name:</td>
-            <td>@Model.Employee.Name</td>
-        </tr>
-        <tr>
-            <td>Department:</td>
-            <td>@Model.Employee.Department</td>
-        </tr>
-    </table>
-    
-    
-</body>
-</html>
+@{
+    Layout = "_Layout";
+    ViewBag.Title = "Employee Details";
+}
+
+<h1>@Model.PageTitle</h1>
+
+<table>
+    <tr>
+        <td>Name:</td>
+        <td>@Model.Employee.Name</td>
+    </tr>
+    <tr>
+        <td>Department:</td>
+        <td>@Model.Employee.Department</td>
+    </tr>
+</table>
