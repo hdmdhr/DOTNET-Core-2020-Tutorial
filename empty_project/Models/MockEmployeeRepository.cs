@@ -23,5 +23,10 @@ namespace empty_project.Models
         {
             return _employeeList.FirstOrDefault(e => e.Id == Id);
         }
+
+        public IEnumerable<Employee> GetAllEmployees()
+        {
+            return _employeeList;
+        }
     }
 }

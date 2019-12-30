@@ -19,7 +19,9 @@ namespace empty_project.Controllers
 
         public IActionResult Index()
         {
-            return Json(_employeeRepo.GetEmployee(1));
+            var model = _employeeRepo.GetAllEmployees();
+            return View(model);
+            //return Json(_employeeRepo.GetEmployee(1));
         }
 
         public IActionResult Details()
