@@ -6,8 +6,15 @@
     <title>@ViewBag.Title</title>
 </head>
 <body>
-    <div>
-        @RenderBody()
-    </div>
+<div>
+    @RenderBody()
+</div>
+@*two ways to render a section optionally*@
+@if (IsSectionDefined("Scripts"))
+{
+    @*@RenderSection("Scripts");*@
+}
+
+@RenderSection("Scripts", false)
 </body>
 </html>
