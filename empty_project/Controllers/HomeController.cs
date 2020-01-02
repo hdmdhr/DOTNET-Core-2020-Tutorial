@@ -24,11 +24,11 @@ namespace empty_project.Controllers
             //return Json(_employeeRepo.GetEmployee(1));
         }
 
-        public IActionResult Details()
+        public IActionResult Details(int id)
         {
             var homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Employee = _employeeRepo.GetEmployee(2),
+                Employee = _employeeRepo.GetEmployee(id),
                 PageTitle = "Employee Details"
             };
             return View(homeDetailsViewModel);
