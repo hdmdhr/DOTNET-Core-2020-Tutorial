@@ -1,31 +1,25 @@
 ﻿@model System.Collections.Generic.IEnumerable<Employee>
 
 @{
-    Layout = null;  // this overrides all _ViewStart.cshtml loading layout code
+    //Layout = null;  // this overrides all _ViewStart.cshtml loading layout code
     ViewBag.Title = "Employee List";
 }
 
-<div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Department</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var employee in Model)
-            {
-                <tr>
-                    <td>@employee.Id</td>
-                    <td>@employee.Name</td>
-                    <td>@employee.Department</td>
-                </tr>
-            }
-        </tbody>
-
-    </table>
+<div class="card-deck">
+    @foreach (var employee in Model)
+    {
+        <div class="card m-3">
+            <div class="card-header">
+                <h3>@employee.Name</h3>
+            </div>
+            <img class="card-img-top" src="images/easy_being_programmer.jpg"/>
+            <div class="card-footer text-center">
+                <a href="#" class="btn btn-primary">View</a>
+                <a href="#" class="btn btn-success">Edit</a>
+                <a href="#" class="btn btn-danger">Delete</a>
+            </div>
+        </div>
+    }
 </div>
 
 @section Scripts
