@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace empty_project.Controllers
 {
-    [Route("[controller]/[action]")]
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepo;
@@ -18,8 +17,6 @@ namespace empty_project.Controllers
             _employeeRepo = employeeRepo;
         }
 
-        [Route("~/Home")]
-        [Route("~/")]
         public IActionResult Index()
         {
             var model = _employeeRepo.GetAllEmployees();
@@ -27,7 +24,6 @@ namespace empty_project.Controllers
             //return Json(_employeeRepo.GetEmployee(1));
         }
 
-        [Route("{id?}")]
         public IActionResult Details(int? id)
         {
             var homeDetailsViewModel = new HomeDetailsViewModel()
