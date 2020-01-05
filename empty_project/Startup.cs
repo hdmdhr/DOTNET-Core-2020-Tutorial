@@ -43,7 +43,7 @@ namespace empty_project
             app.UseStaticFiles();  // Order Reason: if request is for static files, this MW can short circuit to avoid extra processing
 
             //app.UseMvcWithDefaultRoute();  // this is for .NET Core 2.2
-            app.UseMvc(routes => { routes.MapRoute("default", "vod/{controller=Home}/{action=Index}/{id?}"); });  // manually apply default route
+            app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });  // manually apply default route
 
             app.UseRouting();
 
