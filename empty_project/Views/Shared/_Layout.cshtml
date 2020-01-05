@@ -3,20 +3,33 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <environment include="Development">
+        <link href="~/lib/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet"
+              href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+              crossorigin="anonymous"
+              asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only"
+              asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute"
+              asp-suppress-fallback-integrity="true">
+    </environment>
     <link href="~/css/styles.css" rel="stylesheet" />
     <title>@ViewBag.Title</title>
 </head>
 <body>
-<div class="container">
-    @RenderBody()
-</div>
-@*two ways to render a section optionally*@
-@if (IsSectionDefined("Scripts"))
-{
-    @*@RenderSection("Scripts");*@
-}
+    <div class="container">
+        @RenderBody()
+    </div>
+    @*two ways to render a section optionally*@
+    @if (IsSectionDefined("Scripts"))
+    {
+        @*@RenderSection("Scripts");*@
+    }
 
-@RenderSection("Scripts", false)
+    @RenderSection("Scripts", false)
 </body>
 </html>
