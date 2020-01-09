@@ -33,5 +33,10 @@ namespace empty_project.Controllers
             };
             return View(homeDetailsViewModel);
         }
+
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
