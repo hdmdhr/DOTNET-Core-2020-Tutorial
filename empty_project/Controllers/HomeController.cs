@@ -47,7 +47,7 @@ namespace empty_project.Controllers
             if (ModelState.IsValid)
             {
                 var newEmployee = _employeeRepo.Add(employee);
-                return RedirectToAction("Details", new { id = newEmployee.Id });
+                //return RedirectToAction("Details", new { id = newEmployee.Id });
             }
 
             return View();
