@@ -14,6 +14,8 @@ namespace empty_project.Models
         [Required, Display(Name = "Work Email")]
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$", ErrorMessage = "Invalid email format.")]
         public string Email { get; set; }
-        public Departments Department { get; set; }
+        [Required(ErrorMessage = "Must select a department")]
+        // Departments enum has int rawValue, number types are by default required, to make it optional, make the prop nullable by suffix ?
+        public Departments? Department { get; set; }
     }
 }
