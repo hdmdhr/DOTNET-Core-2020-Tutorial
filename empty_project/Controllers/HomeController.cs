@@ -24,6 +24,7 @@ namespace empty_project.Controllers
             //return Json(_employeeRepo.GetEmployee(1));
         }
 
+        
         public IActionResult Details(int? id)
         {
             var homeDetailsViewModel = new HomeDetailsViewModel()
@@ -34,9 +35,17 @@ namespace empty_project.Controllers
             return View(homeDetailsViewModel);
         }
 
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Employee employee)
+        {
+            var newEmployee = _employeeRepo.Add(employee);
+            return RedirectToAction("Details", new {id = newEmployee.Id});
         }
     }
 }
