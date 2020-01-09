@@ -15,12 +15,12 @@
             <img class="card-img-top" src="images/easy_being_programmer.jpg" asp-append-version="true"/>
 
             <div class="card-footer text-center">
-                <a asp-controller="Home" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-outline-info">TagHelper</a>
-                <a href="@Url.Action("Details", "Home", new { id = employee.Id })" class="btn btn-outline-warning">HtmlHelper UrlAction</a>
+                <a asp-controller="Home" asp-action="Details" asp-route-id="@employee.Id" class="btn btn-outline-info m-1">TagHelper</a>
+                <a href="@Url.Action("Details", "Home", new { id = employee.Id })" class="btn btn-outline-warning m-1">HtmlHelper UrlAction</a>
                 @Html.ActionLink("HtmlHelper HtmlActionLink", "Details", "Home", new { id = employee.Id })
-                <a href="/home/details/@employee.Id" class="btn btn-primary">View</a>
-                <a href="#" class="btn btn-success">Edit</a>
-                <a href="#" class="btn btn-danger">Delete</a>
+                <a href="/home/details/@employee.Id" class="btn btn-primary m-1">View</a>
+                <a href="#" class="btn btn-success m-1">Edit</a>
+                <a href="#" class="btn btn-danger m-1">Delete</a>
             </div>
         </div>
     }
