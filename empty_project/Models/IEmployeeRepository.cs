@@ -7,8 +7,10 @@ namespace empty_project.Models
 {
     public interface IEmployeeRepository
     {
-        Employee GetEmployee(int Id);
+        Employee GetEmployee(int id);
         IEnumerable<Employee> GetAllEmployees();
         Employee Add(Employee employee);
+        Employee Update(Employee changedEmployee);
+        Employee Delete(int id);
     }
 }

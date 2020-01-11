@@ -19,9 +19,9 @@ namespace empty_project.Models
             };
         }
 
-        public Employee GetEmployee(int Id)
+        public Employee GetEmployee(int id)
         {
-            return _employeeList.FirstOrDefault(e => e.Id == Id);
+            return _employeeList.FirstOrDefault(e => e.Id == id);
         }
 
         public IEnumerable<Employee> GetAllEmployees()
@@ -34,6 +34,28 @@ namespace empty_project.Models
             employee.Id = _employeeList.Max(e => e.Id) + 1;
             _employeeList.Add(employee);
             return employee;
+        }
+
+        public Employee Update(Employee changedEmployee)
+        {
+            var employee2Update = _employeeList.FirstOrDefault(e => e.Id == changedEmployee.Id);
+            if (employee2Update != null)
+            {
+                employee2Update = changedEmployee;
+            }
+
+            return employee2Update;
+        }
+
+        public Employee Delete(int id)
+        {
+            var employee2Delete = _employeeList.FirstOrDefault(e => e.Id == id);
+            if (employee2Delete != null)
+            {
+                _employeeList.Remove(employee2Delete);
+            }
+
+            return employee2Delete;
         }
     }
 }
