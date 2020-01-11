@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace empty_project.Models
 {
@@ -33,7 +34,10 @@ namespace empty_project.Models
 
         public Employee Update(Employee changedEmployee)
         {
-            throw new NotImplementedException();
+            var employee = _context.Employees.Attach(changedEmployee);
+            employee.State = EntityState.Modified;
+            _context.SaveChanges();
+            return changedEmployee;
         }
 
         public Employee Delete(int id)
