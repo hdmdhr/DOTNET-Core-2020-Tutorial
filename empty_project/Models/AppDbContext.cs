@@ -16,5 +16,10 @@ namespace empty_project.Models
         // for every custom class in the app, need one property
         // LINQ query against DbSet<TEntity> will be translated into SQL query
         public DbSet<Employee> Employees { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Seed();
+        }
     }
 }
