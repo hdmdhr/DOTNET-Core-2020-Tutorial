@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using empty_project.Models;
 using empty_project.ViewModels;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace empty_project.Controllers
@@ -11,10 +13,12 @@ namespace empty_project.Controllers
     public class HomeController : Controller
     {
         private readonly IEmployeeRepository _employeeRepo;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
-        public HomeController(IEmployeeRepository employeeRepo)
+        public HomeController(IEmployeeRepository employeeRepo, IHostingEnvironment hostingEnvironment)
         {
             _employeeRepo = employeeRepo;
+            _hostingEnvironment = hostingEnvironment;
         }
 
         public IActionResult Index()
@@ -42,12 +46,28 @@ namespace empty_project.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(EmployeeCreateViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                var newEmployee = _employeeRepo.Add(employee);
-                //return RedirectToAction("Details", new { id = newEmployee.Id });
+                string uniqueFileName = null;
+                if (vm.Photo != null)
+                {
+                    // generate unique file path
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                    uniqueFileName = $"{Guid.NewGuid().ToString()}_{vm.Photo.FileName}";
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    // copy uploaded photo to specified file path
+                    vm.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+                var newEmployee = _employeeRepo.Add(new Employee
+                {
+                    Name = vm.Name,
+                    Email = vm.Email,
+                    Department = vm.Department,
+                    PhotoPath = uniqueFileName
+                });
+                return RedirectToAction("Details", new {id = newEmployee.Id});
             }
 
             return View();
