@@ -72,5 +72,21 @@ namespace empty_project.Controllers
 
             return View();
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var employee = _employeeRepo.GetEmployee(id);
+            var vm = new EmployeeEditViewModel
+            {
+                Id = employee.Id,
+                Name = employee.Name,
+                Email = employee.Email,
+                Department = employee.Department,
+                ExistingPhotoPath = employee.PhotoPath,
+                Photo = null
+            };
+            return View(vm);
+        }
     }
 }
