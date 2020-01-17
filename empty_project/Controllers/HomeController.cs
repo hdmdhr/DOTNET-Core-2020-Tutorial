@@ -51,24 +51,21 @@ namespace empty_project.Controllers
             if (ModelState.IsValid)
             {
                 string uniqueFileName = null;
-                if (vm.Photos != null && vm.Photos.Count > 0)
+                if (vm.Photo != null)
                 {
-                    foreach (var photo in vm.Photos)
-                    {
-                        // generate unique file path
-                        string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
-                        uniqueFileName = $"{Guid.NewGuid().ToString()}_{photo.FileName}";
-                        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                        // copy uploaded photo to specified file path
-                        photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                    }
+                    // generate unique file path
+                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
+                    uniqueFileName = $"{Guid.NewGuid().ToString()}_{vm.Photo.FileName}";
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    // copy uploaded photo to specified file path
+                    vm.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
                 }
                 var newEmployee = _employeeRepo.Add(new Employee
                 {
                     Name = vm.Name,
                     Email = vm.Email,
                     Department = vm.Department,
-                    PhotoPath = uniqueFileName  // use the last image's path
+                    PhotoPath = uniqueFileName
                 });
                 return RedirectToAction("Details", new {id = newEmployee.Id});
             }

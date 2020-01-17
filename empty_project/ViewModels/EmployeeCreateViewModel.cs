@@ -19,6 +19,6 @@ namespace empty_project.ViewModels
         // Departments enum has int rawValue, number types are by default required, to make it optional, make the prop nullable by suffix ?
         public Departments? Department { get; set; }
 
-        public List<IFormFile> Photos { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }
