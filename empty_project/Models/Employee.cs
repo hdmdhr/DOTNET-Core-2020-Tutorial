@@ -17,5 +17,7 @@ namespace empty_project.Models
         [Required(ErrorMessage = "Must select a department")]
         // Departments enum has int rawValue, number types are by default required, to make it optional, make the prop nullable by suffix ?
         public Departments? Department { get; set; }
+
+        public string PhotoPath { get; set; }
     }
 }
