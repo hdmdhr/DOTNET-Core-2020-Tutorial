@@ -15,7 +15,7 @@ namespace empty_project.Controllers
     {
         private readonly ILogger<ErrorController> _logger;
 
-        public ErrorController(ILogger<ErrorController> logger)  // specify class type to group loggings
+        public ErrorController(ILogger<ErrorController> logger)  // specify <class type> to group loggings
         {
             _logger = logger;
         }
@@ -30,8 +30,6 @@ namespace empty_project.Controllers
                 case 404:
                     ViewBag.ErrorMessage = "Sorry, the resource cannot be found.";
                     _logger.LogWarning($"404 error occured. Path = {statusCodeResult.OriginalPath} and query string =  {statusCodeResult.OriginalQueryString}");
-                    //ViewBag.Path = statusCodeResult.OriginalPath;
-                    //ViewBag.QS = statusCodeResult.OriginalQueryString;
                     break;
             }
 
@@ -45,10 +43,6 @@ namespace empty_project.Controllers
             var exceptionDetails = HttpContext.Features.Get<IExceptionHandlerPathFeature>();
 
             _logger.LogError($"The path: {exceptionDetails.Path} threw an exception {exceptionDetails.Error}");
-
-            //ViewBag.ExceptionPath = exceptionDetails.Path;
-            //ViewBag.ExceptionMessage = exceptionDetails.Error.Message;
-            //ViewBag.StackTrace = exceptionDetails.Error.StackTrace;
 
             return View("Error");
         }
