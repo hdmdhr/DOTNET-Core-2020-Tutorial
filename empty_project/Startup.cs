@@ -6,6 +6,7 @@ using empty_project.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -29,8 +30,13 @@ namespace empty_project
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContextPool<AppDbContext>(options => options.UseSqlServer(_config.GetConnectionString("EmployeeDBConnection")));
+
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>();
+
             services.AddMvc(options => options.EnableEndpointRouting = false)
                 .AddXmlSerializerFormatters();  // this enable content negotiation for XML (Accept: application/xml)
+
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
         }
 
@@ -48,6 +54,8 @@ namespace empty_project
             }
 
             app.UseStaticFiles();  // Order Reason: if request is for static files, this MW can short circuit to avoid extra processing
+
+            app.UseAuthentication();
 
             //app.UseMvcWithDefaultRoute();  // this is for .NET Core 2.2
             app.UseMvc(routes => { routes.MapRoute("default", "{controller=Home}/{action=Index}/{id?}"); });  // manually apply default route

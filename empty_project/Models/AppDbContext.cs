@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace empty_project.Models
 {
-    public class AppDbContext: DbContext
+    public class AppDbContext: IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {
@@ -19,6 +20,9 @@ namespace empty_project.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // to prevent Add-Migration error `entity type 'IdentityUserLogin<string>' requires a primary key to be defined`, call OnModelCreating() on base class
+            base.OnModelCreating(modelBuilder);  // calling this will have PK mapped
+
             modelBuilder.Seed();
         }
     }
