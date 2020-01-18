@@ -41,6 +41,10 @@ namespace empty_project
             {
                 app.UseDeveloperExceptionPage();  // this MW should be plugged in ASAP
             }
+            else
+            {
+                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+            }
 
             app.UseStaticFiles();  // Order Reason: if request is for static files, this MW can short circuit to avoid extra processing
 
