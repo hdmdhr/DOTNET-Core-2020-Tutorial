@@ -34,9 +34,16 @@ namespace empty_project.Controllers
         
         public IActionResult Details(int? id)
         {
+            var employee = _employeeRepo.GetEmployee(id.Value);
+            if (employee == null)
+            {
+                Response.StatusCode = 404;
+                return View("EmployeeNotFound", id.Value);
+            }
+
             var homeDetailsViewModel = new HomeDetailsViewModel()
             {
-                Employee = _employeeRepo.GetEmployee(id ?? 1),
+                Employee = employee,
                 PageTitle = "Employee Details"
             };
             return View(homeDetailsViewModel);
