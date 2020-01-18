@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using empty_project.Models;
 using empty_project.ViewModels;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace empty_project.Controllers
@@ -14,11 +15,13 @@ namespace empty_project.Controllers
     {
         private readonly IEmployeeRepository _employeeRepo;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private string _imagesFolderPath;
 
         public HomeController(IEmployeeRepository employeeRepo, IHostingEnvironment hostingEnvironment)
         {
             _employeeRepo = employeeRepo;
             _hostingEnvironment = hostingEnvironment;
+            _imagesFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "images");
         }
 
         public IActionResult Index()
@@ -50,16 +53,7 @@ namespace empty_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                string uniqueFileName = null;
-                if (vm.Photo != null)
-                {
-                    // generate unique file path
-                    string uploadsFolder = Path.Combine(_hostingEnvironment.WebRootPath, "images");
-                    uniqueFileName = $"{Guid.NewGuid().ToString()}_{vm.Photo.FileName}";
-                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
-                    // copy uploaded photo to specified file path
-                    vm.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
-                }
+                var uniqueFileName = CopyToUniquePath(vm.Photo);
                 var newEmployee = _employeeRepo.Add(new Employee
                 {
                     Name = vm.Name,
@@ -71,6 +65,22 @@ namespace empty_project.Controllers
             }
 
             return View();
+        }
+
+        private string CopyToUniquePath(IFormFile photo)
+        {
+            string uniqueFileName = null;
+            if (photo != null)
+            {
+                // generate unique file path
+                uniqueFileName = $"{Guid.NewGuid().ToString()}_{photo.FileName}";
+                string filePath = Path.Combine(_imagesFolderPath, uniqueFileName);
+                // copy uploaded photo to specified file path
+                using var fileStream = new FileStream(filePath, FileMode.Create);
+                photo.CopyTo(fileStream);
+            }
+
+            return uniqueFileName;
         }
 
         [HttpGet]
@@ -87,6 +97,33 @@ namespace empty_project.Controllers
                 Photo = null
             };
             return View(vm);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(EmployeeEditViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var employee = _employeeRepo.GetEmployee(vm.Id);
+                employee.Name = vm.Name;
+                employee.Email = vm.Email;
+                employee.Department = vm.Department;
+
+                if (vm.Photo != null)
+                {
+                    if (vm.ExistingPhotoPath != null)  // user has old photo
+                    {
+                        var filePath = Path.Combine(_imagesFolderPath, vm.ExistingPhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+                    employee.PhotoPath = CopyToUniquePath(vm.Photo);
+                }
+
+                _employeeRepo.Update(employee);
+                return RedirectToAction("Index");
+            }
+
+            return View();
         }
     }
 }
