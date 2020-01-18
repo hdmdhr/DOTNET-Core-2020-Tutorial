@@ -8,7 +8,6 @@ using empty_project.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace empty_project.Controllers
 {
@@ -16,16 +15,12 @@ namespace empty_project.Controllers
     {
         private readonly IEmployeeRepository _employeeRepo;
         private readonly IHostingEnvironment _hostingEnvironment;
-        private readonly ILogger<HomeController> _logger;
-        private readonly string _imagesFolderPath;
+        private string _imagesFolderPath;
 
-        public HomeController(IEmployeeRepository employeeRepo, 
-            IHostingEnvironment hostingEnvironment, ILogger<HomeController> logger)
+        public HomeController(IEmployeeRepository employeeRepo, IHostingEnvironment hostingEnvironment)
         {
             _employeeRepo = employeeRepo;
             _hostingEnvironment = hostingEnvironment;
-            _logger = logger;
-
             _imagesFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "images");
         }
 
@@ -39,14 +34,7 @@ namespace empty_project.Controllers
         
         public IActionResult Details(int? id)
         {
-            //throw new Exception("Exception in Details");
-
-            _logger.LogTrace("Trace Log");
-            _logger.LogDebug("Debug Log");
-            _logger.LogInformation("Information Log");
-            _logger.LogWarning("Warning Log");
-            _logger.LogError("Error Log");
-            _logger.LogCritical("Critical Log");
+            throw new Exception("Exception in Details");
 
             var employee = _employeeRepo.GetEmployee(id.Value);
             if (employee == null)
