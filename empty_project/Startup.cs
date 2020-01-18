@@ -43,7 +43,7 @@ namespace empty_project
             }
             else
             {
-                app.UseStatusCodePagesWithRedirects("/Error/{0}");
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
             }
 
             app.UseStaticFiles();  // Order Reason: if request is for static files, this MW can short circuit to avoid extra processing
