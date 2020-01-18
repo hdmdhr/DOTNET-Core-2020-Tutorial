@@ -34,6 +34,8 @@ namespace empty_project.Controllers
         
         public IActionResult Details(int? id)
         {
+            throw new Exception("Exception in Details");
+
             var employee = _employeeRepo.GetEmployee(id.Value);
             if (employee == null)
             {
