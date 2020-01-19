@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace empty_project.Models
 {
-    public class AppDbContext: IdentityDbContext
+    public class AppDbContext: IdentityDbContext<ApplicationUser>  // adding <class> is important for migration
     {
         public AppDbContext(DbContextOptions<AppDbContext> options): base(options)
         {

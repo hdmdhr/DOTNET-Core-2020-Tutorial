@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using empty_project.Models;
 using empty_project.Utilities;
 using empty_project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
@@ -13,10 +14,10 @@ namespace empty_project.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -48,7 +49,7 @@ namespace empty_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = vm.Email, Email = vm.Email };
+                var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, City = vm.City};
                 var result = await _userManager.CreateAsync(user, vm.Password);
                 if (result.Succeeded)
                 {
