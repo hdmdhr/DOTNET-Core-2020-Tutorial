@@ -62,14 +62,20 @@ namespace empty_project.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(LoginViewModel vm)
+        public async Task<IActionResult> Login(LoginViewModel vm, string returnUrl)
         {
             if (ModelState.IsValid)
             {
                 var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, false);
 
                 if (result.Succeeded)
+                {
+                    // trailing query string looks like: ?ReturnUrl=%2Fhome%2Fcreate
+                    if (!string.IsNullOrEmpty(returnUrl))
+                        return Redirect(returnUrl);
+                    
                     return RedirectToAction("Index", "Home");
+                }
 
                 ModelState.AddModelError(string.Empty, "Invalid Login Attemp.");
 
