@@ -71,7 +71,7 @@ namespace empty_project.Controllers
                 if (result.Succeeded)
                 {
                     // trailing query string looks like: ?ReturnUrl=%2Fhome%2Fcreate
-                    if (!string.IsNullOrEmpty(returnUrl))
+                    if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
                     
                     return RedirectToAction("Index", "Home");
