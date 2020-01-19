@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using empty_project.Utilities;
 using empty_project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -23,9 +24,14 @@ namespace empty_project.Controllers
 
         [AcceptVerbs("Get", "Post")]
         [AllowAnonymous]
-        public async Task<IActionResult> IsEmailInUse(string email)
+        public async Task<IActionResult> IsEmailValid(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
+            var domains = new[] {"facebook", "apple", "vog", "google", "microsoft"};
+            var attr = new ValidEmailDomainAttribute(domains);
+            if (!attr.IsValid(email))
+                return Json($"Email domain must be one of {string.Join(", ", domains)}");
+            
             return user == null ? Json(true) : Json($"Email {email} is already in use");
         }
 

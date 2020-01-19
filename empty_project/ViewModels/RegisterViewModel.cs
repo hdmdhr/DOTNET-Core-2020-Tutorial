@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using empty_project.Utilities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace empty_project.ViewModels
@@ -11,7 +12,8 @@ namespace empty_project.ViewModels
     {
         [Required]
         [EmailAddress]
-        [Remote("IsEmailInUse", "Account")]
+        [Remote("IsEmailValid", "Account")]
+        [ValidEmailDomain("facebook", "apple", "vog", "google", "microsoft", ErrorMessage = "Invalid domain name, must be 'apple', 'facebook', 'google', 'vog', or 'microsoft'.")]
         public string Email { get; set; }
 
         [Required]
