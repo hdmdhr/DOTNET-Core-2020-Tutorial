@@ -52,14 +52,12 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Create(EmployeeCreateViewModel vm)
         {
             if (ModelState.IsValid)
@@ -95,7 +93,6 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
-        [Authorize]
         public IActionResult Edit(int id)
         {
             var employee = _employeeRepo.GetEmployee(id);
@@ -112,7 +109,6 @@ namespace empty_project.Controllers
         }
 
         [HttpPost]
-        [Authorize]
         public IActionResult Edit(EmployeeEditViewModel vm)
         {
             if (ModelState.IsValid)
