@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using empty_project.Models;
 using empty_project.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -24,6 +25,7 @@ namespace empty_project.Controllers
             _imagesFolderPath = Path.Combine(_hostingEnvironment.WebRootPath, "images");
         }
 
+        [AllowAnonymous]
         public IActionResult Index()
         {
             var model = _employeeRepo.GetAllEmployees();
@@ -31,11 +33,9 @@ namespace empty_project.Controllers
             //return Json(_employeeRepo.GetEmployee(1));
         }
 
-        
+        [AllowAnonymous]
         public IActionResult Details(int? id)
         {
-            throw new Exception("Exception in Details");
-
             var employee = _employeeRepo.GetEmployee(id.Value);
             if (employee == null)
             {
@@ -52,12 +52,14 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(EmployeeCreateViewModel vm)
         {
             if (ModelState.IsValid)
@@ -93,6 +95,7 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public IActionResult Edit(int id)
         {
             var employee = _employeeRepo.GetEmployee(id);
@@ -109,6 +112,7 @@ namespace empty_project.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Edit(EmployeeEditViewModel vm)
         {
             if (ModelState.IsValid)

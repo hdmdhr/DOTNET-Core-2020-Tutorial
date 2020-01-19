@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using empty_project.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -38,7 +40,13 @@ namespace empty_project
                 })
                 .AddEntityFrameworkStores<AppDbContext>();
 
-            services.AddMvc(options => options.EnableEndpointRouting = false)
+            services.AddMvc(options =>
+                {
+                    options.EnableEndpointRouting = false;
+
+                    var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                    options.Filters.Add(new AuthorizeFilter(policy));
+                })
                 .AddXmlSerializerFormatters();  // this enable content negotiation for XML (Accept: application/xml)
 
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
