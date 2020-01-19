@@ -21,6 +21,14 @@ namespace empty_project.Controllers
             _signInManager = signInManager;
         }
 
+        [AcceptVerbs("Get", "Post")]
+        [AllowAnonymous]
+        public async Task<IActionResult> IsEmailInUse(string email)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            return user == null ? Json(true) : Json($"Email {email} is already in use");
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Register()
