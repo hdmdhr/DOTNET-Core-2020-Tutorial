@@ -50,6 +50,29 @@ namespace empty_project.Controllers
             return View(vm);
         }
 
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var result = await _signInManager.PasswordSignInAsync(vm.Email, vm.Password, vm.RememberMe, false);
+
+                if (result.Succeeded)
+                    return RedirectToAction("Index", "Home");
+
+                ModelState.AddModelError(string.Empty, "Invalid Login Attemp.");
+
+            }
+
+            return View(vm);
+        }
+
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
