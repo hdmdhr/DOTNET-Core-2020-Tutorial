@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using empty_project.Models;
 using empty_project.Utilities;
 using empty_project.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace empty_project.Controllers
 {
+    [Authorize(Roles = "Company Admin, Super Admin")]
     public class AdministrationController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -24,12 +26,14 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Super Admin")]
         public IActionResult CreateRole()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "Super Admin")]
         public async Task<IActionResult> CreateRole(CreateRoleViewModel vm)
         {
             if (ModelState.IsValid)
