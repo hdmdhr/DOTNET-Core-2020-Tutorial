@@ -33,13 +33,20 @@ namespace empty_project.Controllers
                 var role = new IdentityRole(vm.RoleName);
                 var result = await _roleManager.CreateAsync(role);
                 if (result.Succeeded)
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("ListRoles");
 
                 foreach (var error in result.Errors)
                     ModelState.AddModelError("", error.Description);
             }
 
             return View(vm);
+        }
+
+        [HttpGet]
+        public IActionResult ListRoles()
+        {
+            var roles = _roleManager.Roles;
+            return View(roles);
         }
     }
 }
