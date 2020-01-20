@@ -1,5 +1,10 @@
 ﻿@inject SignInManager<ApplicationUser> _signInManager;
 
+@{
+    var isSuperAdmin = User.IsInRole("Super Admin");
+    var isCompanyAdmin = User.IsInRole("Company Admin");
+}
+
 <!DOCTYPE html>
 
 <html>
@@ -41,9 +46,22 @@
                 <ul class="navbar-nav">
                     <li class="nav-item"><a asp-action="index" asp-controller="home" class="nav-link">List</a></li>
                     <li class="nav-item"><a asp-action="create" asp-controller="home" class="nav-link">Create</a></li>
-                    @if (_signInManager.IsSignedIn(User) && User.IsInRole("Super Admin"))
+                    @if (_signInManager.IsSignedIn(User) && (isSuperAdmin || isCompanyAdmin))
                     {
-                        <li class="nav-item"><a asp-action="ListRoles" asp-controller="Administration" class="nav-link">Manage Roles</a></li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink"
+                               data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Manage
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" asp-controller="Administration"
+                                   asp-action="ListUsers">Users</a>
+                                @if (isSuperAdmin)
+                                {
+                                    <a class="dropdown-item" asp-controller="Administration" asp-action="ListRoles">Roles</a>
+                                }
+                            </div>
+                        </li>
                     }
                 </ul>
                 <ul class="navbar-nav ml-auto">
@@ -71,12 +89,6 @@
             @RenderBody()
         </div>
     </div>
-
-    @*two ways to render a section optionally*@
-    @if (IsSectionDefined("Scripts"))
-    {
-        @*@RenderSection("Scripts");*@
-    }
 
     @RenderSection("Scripts", false)
 </body>

@@ -51,6 +51,13 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
+        public IActionResult ListUsers()
+        {
+            var users = _userManager.Users.ToList();
+            return View(users);
+        }
+
+        [HttpGet]
         public IActionResult ListRoles()
         {
             var roles = _roleManager.Roles;

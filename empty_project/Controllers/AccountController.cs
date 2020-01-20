@@ -28,11 +28,11 @@ namespace empty_project.Controllers
         public async Task<IActionResult> IsEmailValid(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
-            var domains = new[] {"facebook", "apple", "vog", "google", "microsoft"};
+            var domains = new[] { "facebook", "apple", "vog", "google", "microsoft" };
             var attr = new ValidEmailDomainAttribute(domains);
             if (!attr.IsValid(email))
                 return Json($"Email domain must be one of {string.Join(", ", domains)}");
-            
+
             return user == null ? Json(true) : Json($"Email {email} is already in use");
         }
 
@@ -49,20 +49,20 @@ namespace empty_project.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, City = vm.City};
+                var user = new ApplicationUser { UserName = vm.Email, Email = vm.Email, City = vm.City };
                 var result = await _userManager.CreateAsync(user, vm.Password);
                 if (result.Succeeded)
                 {
+                    if (_signInManager.IsSignedIn(User) &&
+                        (User.IsInRole("Super Admin") || User.IsInRole("Company Admin")))
+                        return RedirectToAction("ListUsers", "Administration");
+
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
                 }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-                }
+
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
             }
 
             return View(vm);
@@ -88,7 +88,7 @@ namespace empty_project.Controllers
                     // trailing query string looks like: ?ReturnUrl=%2Fhome%2Fcreate
                     if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
                         return Redirect(returnUrl);
-                    
+
                     return RedirectToAction("Index", "Home");
                 }
 
