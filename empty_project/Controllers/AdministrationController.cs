@@ -75,7 +75,7 @@ namespace empty_project.Controllers
                 return View("NotFound");
             }
 
-            var model = new EditRoleViewModel{Id = id, RoleName = role.Name};
+            var model = new EditRoleViewModel { Id = id, RoleName = role.Name };
 
             foreach (var user in _userManager.Users.ToList())
             {
@@ -85,7 +85,7 @@ namespace empty_project.Controllers
 
             return View(model);
 
-         
+
         }
 
         [HttpPost]
@@ -105,7 +105,7 @@ namespace empty_project.Controllers
             if (result.Succeeded)
                 return RedirectToAction("ListRoles");
 
-            foreach(var error in result.Errors)
+            foreach (var error in result.Errors)
                 ModelState.AddModelError("", error.Description);
 
             return View(vm);
@@ -129,7 +129,7 @@ namespace empty_project.Controllers
             {
                 var userRoleVM = new UserRoleViewModel
                 {
-                    UserId = user.Id, 
+                    UserId = user.Id,
                     UserName = user.UserName
                 };
 
@@ -167,12 +167,62 @@ namespace empty_project.Controllers
                 {
                     if (i < viewModels.Count - 1)  // more to loop
                         continue;
-                    
-                    return RedirectToAction("EditRole", new {Id = roleId});
+
+                    return RedirectToAction("EditRole", new { Id = roleId });
                 }
             }
 
             return RedirectToAction("EditRole", new { Id = roleId });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditUser(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id: {id} cannot be found.";
+                return View("NotFound");
+            }
+
+            var vm = new EditUserViewModel
+            {
+                Id = user.Id,
+                Email = user.Email,
+                UserName = user.UserName,
+                City = user.City,
+                Claims = (await _userManager.GetClaimsAsync(user)).Select(c => c.Value).ToList(),
+                Roles = (await _userManager.GetRolesAsync(user))
+            };
+
+            return View(vm);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditUser(EditUserViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.Id);
+
+            if (user == null)
+            {
+                ViewBag.ErrorMessage = $"User with id: {model.Id} cannot be found.";
+                return View("NotFound");
+            }
+
+            user.Email = model.Email;
+            user.UserName = model.UserName;
+            user.City = model.City;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (result.Succeeded)
+                return RedirectToAction("ListUsers");
+
+            foreach (var error in result.Errors)
+                ModelState.AddModelError("", error.Description);
+
+            return View(model);
         }
     }
 }
