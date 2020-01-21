@@ -2,6 +2,11 @@
     width: 125px;
 }
 
+.btn-white {
+    color: white !important;
+    cursor: pointer;
+}
+
 .imageThumbnail {
     height: 200px;
     width: auto;
