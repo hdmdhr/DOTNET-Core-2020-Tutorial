@@ -24,6 +24,13 @@ namespace empty_project.Models
             base.OnModelCreating(modelBuilder);  // calling this will have PK mapped
 
             modelBuilder.Seed();
+
+            // change OnDelete from default Cascade to NoAction
+            foreach (var foreignKey in modelBuilder.Model.GetEntityTypes()
+                .SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Restrict;
+            }
         }
     }
 }
