@@ -8,6 +8,8 @@ using empty_project.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,11 +20,15 @@ namespace empty_project.Controllers
     {
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<AdministrationController> _logger;
 
-        public AdministrationController(RoleManager<IdentityRole> roleManager, UserManager<ApplicationUser> userManager)
+        public AdministrationController(RoleManager<IdentityRole> roleManager,
+            UserManager<ApplicationUser> userManager, 
+            ILogger<AdministrationController> logger)
         {
             _roleManager = roleManager;
             _userManager = userManager;
+            _logger = logger;
         }
 
         [HttpGet]
@@ -258,15 +264,26 @@ namespace empty_project.Controllers
                 return View("NotFound");
             }
 
-            var result = await _roleManager.DeleteAsync(role);
+            try
+            {
+                var result = await _roleManager.DeleteAsync(role);
 
-            if (result.Succeeded)
-                return RedirectToAction("ListRoles");
+                if (result.Succeeded)
+                    return RedirectToAction("ListRoles");
 
-            foreach (var error in result.Errors)
-                ModelState.AddModelError("", error.Description);
+                foreach (var error in result.Errors)
+                    ModelState.AddModelError("", error.Description);
 
-            return View("ListRoles");
+                return View("ListRoles");
+            }
+            catch (DbUpdateException e)
+            {
+                _logger.LogError($"Error while deleting role {role.Name}.");
+
+                ViewBag.ErrorTitle = $"{role.Name} is in use.";
+                ViewBag.ErrorMessage = $"To delete role: {role.Name}, remove all underlying user then try again.";
+                return View("Error");
+            }
         }
     }
 }
