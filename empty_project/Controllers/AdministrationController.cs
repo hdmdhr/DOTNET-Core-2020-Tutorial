@@ -33,8 +33,7 @@ namespace empty_project.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Super Admin")]
-        [Authorize(Policy = "SuperAdminRolePolicy")]
+        [Authorize(Roles = "Super Admin")]
         public IActionResult CreateRole()
         {
             return View();
