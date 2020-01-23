@@ -45,6 +45,9 @@ namespace empty_project
                 options.AddPolicy("DeleteRolePolicy", 
                     policy => policy.RequireClaim("Delete Role")
                         .RequireClaim("Create Role"));
+
+                options.AddPolicy("SuperAdminRolePolicy",
+                    policy => policy.RequireRole("Super Admin"));
             });
 
             services.AddMvc(options =>
