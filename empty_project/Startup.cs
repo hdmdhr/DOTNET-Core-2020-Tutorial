@@ -40,6 +40,13 @@ namespace empty_project
                 })
                 .AddEntityFrameworkStores<AppDbContext>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("DeleteRolePolicy", 
+                    policy => policy.RequireClaim("Delete Role")
+                        .RequireClaim("Create Role"));
+            });
+
             services.AddMvc(options =>
                 {
                     options.EnableEndpointRouting = false;
