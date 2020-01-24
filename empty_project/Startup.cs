@@ -58,6 +58,9 @@ namespace empty_project
                 })
                 .AddXmlSerializerFormatters();  // this enable content negotiation for XML (Accept: application/xml)
 
+            // customize AccessDenied route
+            services.ConfigureApplicationCookie(options => options.AccessDeniedPath = new PathString("/Administration/AccessDenied"));
+
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
         }
 
