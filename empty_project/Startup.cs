@@ -45,8 +45,13 @@ namespace empty_project
                 options.AddPolicy("DeleteRolePolicy", 
                     policy => policy.RequireClaim("Delete Role")
                         .RequireClaim("Create Role"));
+                // Custom Policy: to edit role, user either needs to be SuperAdmin, or CompanyAdmin with Edit Role claim
                 options.AddPolicy("EditRolePolicy",
-                    policy => policy.RequireClaim("Edit Role", "true"));
+                    policy => policy.RequireAssertion(context => 
+                        context.User.IsInRole("Company Admin") && 
+                        context.User.HasClaim(c => c.Type == "Edit Role" && c.Value == "true") ||
+                        context.User.IsInRole("Super Admin")
+                        ));
             });
 
             services.AddMvc(options =>
