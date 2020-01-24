@@ -201,7 +201,7 @@ namespace empty_project.Controllers
                 Email = user.Email,
                 UserName = user.UserName,
                 City = user.City,
-                Claims = (await _userManager.GetClaimsAsync(user)).Select(c => c.Value).ToList(),
+                Claims = (await _userManager.GetClaimsAsync(user)).Select(c => $"{c.Type}: {c.Value}").ToList(),
                 Roles = (await _userManager.GetRolesAsync(user))
             };
 
@@ -376,7 +376,7 @@ namespace empty_project.Controllers
             {
                 var userClaim = new UserClaim { ClaimType = claim.Type };
 
-                userClaim.IsSelected = existingUserClaims.Any(c => c.Type == claim.Type);
+                userClaim.IsSelected = existingUserClaims.Any(c => c.Type == claim.Type && c.Value == "true");
 
                 model.Claims.Add(userClaim);
             }
@@ -406,7 +406,8 @@ namespace empty_project.Controllers
             }
 
             // 2. Add all the claims that are selected on the UI
-            result = await _userManager.AddClaimsAsync(user, model.Claims.Where(c => c.IsSelected).Select(c => new Claim(c.ClaimType, c.ClaimType)));
+            result = await _userManager.AddClaimsAsync(user, 
+                model.Claims.Select(c => new Claim(c.ClaimType, c.IsSelected ? "true" : "false")));
 
             if (!result.Succeeded)
             {

@@ -46,7 +46,7 @@ namespace empty_project
                     policy => policy.RequireClaim("Delete Role")
                         .RequireClaim("Create Role"));
                 options.AddPolicy("EditRolePolicy",
-                    policy => policy.RequireClaim("Edit Role"));
+                    policy => policy.RequireClaim("Edit Role", "true"));
             });
 
             services.AddMvc(options =>
