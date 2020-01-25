@@ -67,6 +67,7 @@ namespace empty_project
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
 
             services.AddSingleton<IAuthorizationHandler, CanOnlyEditOtherAdminRolesAndClaimsHandler>();
+            services.AddSingleton<IAuthorizationHandler, SuperAdminHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

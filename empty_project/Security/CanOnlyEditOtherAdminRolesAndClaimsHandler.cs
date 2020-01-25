@@ -21,7 +21,7 @@ namespace empty_project.Security
             // get being edited admin id from query string
             string adminIdBeingEdited = authFilterContext.HttpContext.Request.Query["userId"];
 
-            if (context.User.IsInRole("Admin") &&
+            if (context.User.IsInRole("Company Admin") &&
                 context.User.HasClaim(claim => claim.Type == "Edit Role" && claim.Value == "true") &&
                 adminIdBeingEdited.ToLower() != loggedInAdminId.ToLower())
             {
