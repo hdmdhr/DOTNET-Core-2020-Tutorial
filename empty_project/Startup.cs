@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using empty_project.Models;
+using empty_project.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -47,17 +48,14 @@ namespace empty_project
                         .RequireClaim("Create Role"));
                 // Custom Policy: to edit role, user either needs to be SuperAdmin, or CompanyAdmin with Edit Role claim
                 options.AddPolicy("EditRolePolicy",
-                    policy => policy.RequireAssertion(context => 
-                        context.User.IsInRole("Company Admin") && 
-                        context.User.HasClaim(c => c.Type == "Edit Role" && c.Value == "true") ||
-                        context.User.IsInRole("Super Admin")
-                        ));
+                    policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
             });
 
             services.AddMvc(options =>
                 {
                     options.EnableEndpointRouting = false;
 
+                    // enable pocily globally
                     var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
                     options.Filters.Add(new AuthorizeFilter(policy));
                 })
@@ -67,6 +65,8 @@ namespace empty_project
             services.ConfigureApplicationCookie(options => options.AccessDeniedPath = new PathString("/Administration/AccessDenied"));
 
             services.AddScoped<IEmployeeRepository, SqlEmployeeRepository>();
+
+            services.AddSingleton<IAuthorizationHandler, CanOnlyEditOtherAdminRolesAndClaimsHandler>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
