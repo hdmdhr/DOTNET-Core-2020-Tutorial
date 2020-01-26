@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:44039",
+      "applicationUrl": "https://localhost:44362/",
       "sslPort": 44362
     }
   },
@@ -12,8 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Staging",
-        "MyKey": " Key from environment variable"
+        "MyKey": " Key from environment variable",
+        "ASPNETCORE_ENVIRONMENT": "Staging"
       }
     },
     "empty_project": {

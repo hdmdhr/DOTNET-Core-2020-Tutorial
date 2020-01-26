@@ -51,6 +51,11 @@ namespace empty_project
                     policy => policy.AddRequirements(new ManageAdminRolesAndClaimsRequirement()));
             });
 
+            services.AddAuthentication().AddGoogle(options =>
+            {
+
+            });
+
             services.AddMvc(options =>
                 {
                     options.EnableEndpointRouting = false;
@@ -60,6 +65,7 @@ namespace empty_project
                     options.Filters.Add(new AuthorizeFilter(policy));
                 })
                 .AddXmlSerializerFormatters();  // this enable content negotiation for XML (Accept: application/xml)
+
 
             // customize AccessDenied route
             services.ConfigureApplicationCookie(options => options.AccessDeniedPath = new PathString("/Administration/AccessDenied"));
